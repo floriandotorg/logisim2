@@ -1,3 +1,22 @@
+export class Clock {
+  constructor(update) {
+    this._update = update;
+  }
+
+  setHigh() {
+    this._update(1n);
+  }
+
+  setLow() {
+    this._update(0n);
+  }
+
+  tick() {
+    this.setHigh();
+    this.setLow();
+  }
+}
+
 export class DIPSwitch {
   constructor(update, wire) {
     this._update = update;

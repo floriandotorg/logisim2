@@ -29,11 +29,19 @@ class SplicedWire {
     const pval = this._parent.value() & ~this._mask;
     this._parent.write(pval | ((value << this._start) & this._mask), true);
   }
+
+  high() {
+    if (this.width() !== 1) {
+      throw new Error('high called on wire with width > 0');
+    }
+
+    return !!this.value();
+  }
 }
 
 class Wire {
   constructor(width) {
-    this._currentValue = BigInt(0);
+    this._currentValue = 0n;
     this._newValue = null;
     this._width = width;
     this._children = [];
@@ -71,8 +79,56 @@ class Wire {
   }
 
   splice(start, n = 1) {
+    if (this.width() < start + n) {
+      throw new Error('splice too far');
+    }
+
     this._children.push(new SplicedWire(this, start, n));
     return _.last(this._children);
+  }
+
+  high() {
+    if (this.width() !== 1) {
+      throw new Error('high called on wire with width > 0');
+    }
+
+    return !!this.value();
+  }
+}
+
+class CombinedWire {
+  constructor(parents) {
+    this._parents = _.reverse(parents);
+    this._width = _.reduce(this._parents, (w, p) => w + p.width(), 0);
+  }
+
+  value() {
+    let n = 0, result = 0n;
+
+    for (let p of this._parents) {
+      result |= p.value() << BigInt(n);
+      n += p.width();
+    }
+
+    return result;
+  }
+
+  width() {
+    return this._width;
+  }
+}
+
+export const combine = (...wires) => {
+  return new CombinedWire(wires);
+}
+
+export const risingEdge = () => {
+  let state = 0n;
+
+  return wire => {
+    const result = !state && !!wire.value();
+    state = wire.value();
+    return result;
   }
 }
 
@@ -83,9 +139,8 @@ export class Simulator {
   }
 
   createWire(width) {
-    const wire = new Wire(width);
-    this._wires.push(wire);
-    return wire;
+    this._wires.push(new Wire(width));
+    return _.last(this._wires);
   }
 
   registerComponent(component, ...wires) {
