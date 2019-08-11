@@ -1,0 +1,95 @@
+body {
+  background: black;
+  color: white;
+  font-family: monospace;
+}
+
+.widget {
+  margin-bottom: 15px;
+
+  &.ledarray {
+    > .leds {
+      > .led {
+        width: 18px;
+        height: 18px;
+        border-radius: 100%;
+        opacity: .4;
+        display: inline-block;
+
+        &.on {
+          opacity: 1;
+          filter: brightness(200%);
+        }
+      }
+    }
+  }
+}
+
+.display {
+  $size: 0.2;
+  position: relative;
+  height: 290px * $size;
+  width: 200px * $size;
+  display: inline-block;
+
+  > .segment {
+    height: 125px * $size;
+    width: 25px * $size;
+    background-color: #990000;
+    border-radius: 9999px;
+
+    &.A, &.B, &.C, &.D, &.E, &.F, &.G {
+      opacity: 0.3;
+
+      &.on {
+        opacity: 1;
+        filter: brightness(150%);
+      }
+    }
+
+    &.A {
+      position: absolute;
+      top: -45px * $size;
+      left: 90px * $size;
+      transform: rotate(90deg);
+    }
+
+    &.B {
+      position: absolute;
+      top: 20px * $size;
+      left: 160px * $size;
+    }
+
+    &.C {
+      position: absolute;
+      top: 150px * $size;
+      left: 160px * $size;
+    }
+
+    &.D {
+      position: absolute;
+      top: 215px * $size;
+      left: 90px * $size;
+      transform: rotate(90deg);
+    }
+
+    &.E {
+      position: absolute;
+      top: 150px * $size;
+      left: 20px * $size;
+    }
+
+    &.F {
+      position: absolute;
+      top: 20px * $size;
+      left: 20px * $size;
+    }
+
+    &.G {
+      position: absolute;
+      top: 85px * $size;
+      left: 90px * $size;
+      transform: rotate(90deg);
+    }
+  }
+}

@@ -7,3 +7,13 @@ export const toBinaryString = (value, width = 32) => {
 
   return output.join('');
 }
+
+export const risingEdge = () => {
+  let state = 0n;
+
+  return wire => {
+    const result = !state && !!wire.value();
+    state = wire.value();
+    return result;
+  }
+}

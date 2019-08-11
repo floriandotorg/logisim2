@@ -1,5 +1,4 @@
 import isClass from 'is-class';
-import { toBinaryString } from './util';
 
 const maskFirstNBits = num => {
   let result = 0n;
@@ -58,6 +57,11 @@ class Wire {
     if (value !== this._currentValue) {
       this._newValue = value;
     }
+  }
+
+  reset() {
+    this._currentValue = 0n;
+    this._newValue = null;
   }
 
   update() {
@@ -122,16 +126,6 @@ export const combine = (...wires) => {
   return new CombinedWire(wires);
 }
 
-export const risingEdge = () => {
-  let state = 0n;
-
-  return wire => {
-    const result = !state && !!wire.value();
-    state = wire.value();
-    return result;
-  }
-}
-
 export class Simulator {
   constructor() {
     this._components = [];
@@ -178,7 +172,6 @@ export class Simulator {
       }
     } while (_.filter(this._wires, wire => wire.update()).length > 0);
 
-    console.log('done')
   }
 
   init() {
