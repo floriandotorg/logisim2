@@ -17,3 +17,13 @@ export const risingEdge = () => {
     return result;
   }
 }
+
+export const fallingEdge = () => {
+  let state = 1n;
+
+  return wire => {
+    const result = !!state && !wire.value();
+    state = wire.value();
+    return result;
+  }
+}

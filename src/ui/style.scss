@@ -93,3 +93,60 @@ body {
     }
   }
 }
+
+@keyframes blinker {
+  50% {
+    background: #222625;
+  }
+}
+
+.lcd {
+  display: inline-block;
+  background: #96D028;
+  padding: 15px 18px;
+
+  $pixelSize: 4px;
+
+  > .line {
+    height: 10*$pixelSize;
+
+    &:not(:first-child) {
+      margin-top: 1px;
+    }
+
+    > .character {
+      display: inline-block;
+      background: #8BC12B;
+      width: 5*$pixelSize;
+      line-height: 0px;
+
+      &.off {
+        visibility: hidden;
+      }
+
+      &.blink > .pixelline > .pixel {
+        animation: blinker 1s step-end infinite;
+      }
+
+      &:not(:first-child) {
+        margin-left: 1px;
+      }
+
+      > .pixelline {
+        display: inline-block;
+        height: $pixelSize;
+        line-height: 0px;
+
+        > .pixel {
+          display: inline-block;
+          width: $pixelSize;
+          height: $pixelSize;
+
+          &.on {
+            background: #222625;
+          }
+        }
+      }
+    }
+  }
+}

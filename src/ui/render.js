@@ -2,6 +2,8 @@ import _ from 'lodash';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { toBinaryString } from '../logic/util';
+import Hd44780Lcd from './Hd44780_lcd';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss'
 
 const Clock = ({ params: [ instance, name ] }) => {
@@ -262,14 +264,15 @@ const mapComponentToRenderer = {
   Ram,
   SegDisplay,
   PushButton,
+  Hd44780Lcd,
 }
 
 export default (layout) => {
   const App = () => <div className="row">
     {layout.map((widgets, n) => <div key={n} className="col">
-        {widgets.map(widget => {
+        {widgets.map((widget, n) => {
           const Element = mapComponentToRenderer[widget[0].constructor.name];
-          return <Element className="row" key={widget[1]} params={widget} />;
+          return <Element className="row" key={`${widget[1]}-${n}`} params={widget} />;
         })}
     </div>)}
   </div>

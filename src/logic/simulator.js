@@ -31,10 +31,18 @@ class SplicedWire {
 
   high() {
     if (this.width() !== 1) {
-      throw new Error('high called on wire with width > 0');
+      throw new Error('high called on wire with width > 1');
     }
 
     return !!this.value();
+  }
+
+  low() {
+    if (this.width() !== 1) {
+      throw new Error('high called on wire with width > 1');
+    }
+
+    return !this.value();
   }
 }
 
@@ -93,10 +101,18 @@ class Wire {
 
   high() {
     if (this.width() !== 1) {
-      throw new Error('high called on wire with width > 0');
+      throw new Error('high called on wire with width > 1');
     }
 
     return !!this.value();
+  }
+
+  low() {
+    if (this.width() !== 1) {
+      throw new Error('high called on wire with width > 1');
+    }
+
+    return !this.value();
   }
 }
 
